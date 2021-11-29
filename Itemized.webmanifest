@@ -44,7 +44,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/index.html",
+    "start_url": "/ItemizedJS/index.html",
     "display": "fullscreen",
     "theme_color": "#a456a6",
     "background_color": "#631968"
