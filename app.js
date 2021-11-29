@@ -1,12 +1,5 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/ItemizedJS/sw.js')
-        .then((reg) => {
-            // registration worked
-            console.info('Registration succeeded. Scope is ' + reg.scope);
-        }).catch((error) => {
-            // registration failed
-            console.error('Registration failed with ' + error);
-        });
+    navigator.serviceWorker.register('/ItemizedJS/sw.js');
 }
 
 const main = document.querySelector("main");
