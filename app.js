@@ -1,5 +1,9 @@
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/ItemizedJS/sw.js')
+const scope = (location.hostname == "localhost")
+    ? "."
+    : "/ItemizedJS"
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register(`${scope}/sw.js`)
         .then((reg) => {
             // registration worked
             console.info('Registration succeeded. Scope is ' + reg.scope);
