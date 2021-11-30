@@ -11,6 +11,7 @@ self.addEventListener('install', (e) => {
 });
   
 // Fetching content using Service Worker
+/*
 self.addEventListener('fetch', (e) => {
     e.respondWith((async () => {
         const r = await caches.match(e.request);
@@ -23,3 +24,4 @@ self.addEventListener('fetch', (e) => {
         return response;
     })());
 });
+*/

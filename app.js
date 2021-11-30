@@ -1,8 +1,13 @@
-const scope = (location.hostname == "localhost")
+import LootDatabase from "./Infrastructure/LootDatabase.js";
+import Inventory from "./Models/Inventory.js";
+import Item from "./Models/Item.js";
+
+if ("serviceWorker" in navigator) {
+
+    const scope = (location.hostname == "localhost")
     ? "."
     : "/ItemizedJS"
 
-if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register(`${scope}/sw.js`)
         .then((reg) => {
             // registration worked
@@ -13,14 +18,42 @@ if ("serviceWorker" in navigator) {
         });
 }
 
-const main = document.querySelector("main");
+const db = new LootDatabase(await fetch('data/loot.json').then(_ => _.json()));
+let inventory = new Inventory();
 
-let ul = document.createElement("ul");
+inventory.add(new Item([1,1]));
 
-for (let i = 0; i < 10; i++) {
-    let li = document.createElement("li");
-    li.innerText = `Item ${i+1}`;
-    ul.appendChild(li);
+for (let i = 0; i < 10; i++)
+    inventory.add(db.makeItem());
+
+for (let [item,quantity] of inventory.slots()) {
+    console.debug(db.describe(item, quantity));
 }
 
-main.appendChild(ul);
+console.info("Initialization succeeded.");
+
+const runButton = document.querySelector("#run");
+
+runButton.addEventListener("click", () => {
+
+    const itemsField = document.querySelector("#items");
+    const itemsText = itemsField.value;
+    let numItems = (itemsText.length) ? Number.parseInt(itemsText) : 10;
+
+    for (; numItems > 0; numItems -= 1)
+        inventory.add(db.makeItem());
+
+    const main = document.querySelector("main");
+
+    main.innerHTML = "";
+
+    let ul = document.createElement("ul");
+
+    for (let [item,quantity] of inventory.slots()) {
+        let li = document.createElement("li");
+        li.innerText = db.describe(item, quantity);
+        ul.appendChild(li);
+    }
+            
+    main.appendChild(ul);
+});
