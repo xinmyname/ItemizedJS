@@ -2,11 +2,7 @@ import Loot from "./Infrastructure/Loot.js";
 import Inventory from "./Models/Inventory.js";
 
 if ("serviceWorker" in navigator) {
-    const scope = (location.hostname == "localhost")
-    ? "."
-    : "/ItemizedJS"
-
-    await navigator.serviceWorker.register(`${scope}/sw.js`, { type: 'module'})
+    await navigator.serviceWorker.register(`/ItemizedJS/sw.js`);//, { type: 'module'})
 }
 
 const loot = new Loot(await fetch('data/loot.json').then(_ => _.json()));
