@@ -1,4 +1,4 @@
-import LootDatabase from "./Infrastructure/LootDatabase.js";
+import Loot from "./Infrastructure/Loot.js";
 import Inventory from "./Models/Inventory.js";
 
 if ("serviceWorker" in navigator) {
@@ -9,7 +9,7 @@ if ("serviceWorker" in navigator) {
     await navigator.serviceWorker.register(`${scope}/sw.js`, { type: 'module'})
 }
 
-const db = new LootDatabase(await fetch('data/loot.json').then(_ => _.json()));
+const loot = new Loot(await fetch('data/loot.json').then(_ => _.json()));
 let inventory = new Inventory();
 
 console.info("Initialization succeeded.");
@@ -25,7 +25,7 @@ runButton.addEventListener("click", () => {
     const counts = [1,1,1,1,1,1,1,2,2,3];
 
     for (; numItems > 0; numItems -= 1)
-        inventory.add(db.makeItem(), counts[Math.floor(Math.random() * counts.length)]);
+        inventory.add(loot.makeItem(), counts[Math.floor(Math.random() * counts.length)]);
 
     const main = document.querySelector("main");
 
@@ -35,7 +35,7 @@ runButton.addEventListener("click", () => {
 
     for (let [item,quantity] of inventory.slots()) {
         let li = document.createElement("li");
-        li.innerText = db.describe(item, quantity);
+        li.innerText = loot.describe(item, quantity);
         ul.appendChild(li);
     }
             

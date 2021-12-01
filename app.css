@@ -46,7 +46,7 @@ h1 img {
 }
 
 .row {
-    margin-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 
 input, button {
@@ -62,4 +62,3 @@ input, button {
 ::placeholder { /* Most modern browsers support this now. */
     color:    #631968;
  }
- 

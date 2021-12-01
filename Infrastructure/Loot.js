@@ -3,7 +3,7 @@ import ItemProperty from "../Models/ItemProperty.js";
 import Table from "./Table.js";
 import { Pluralizer } from "./Pluralize.js";
 
-export default class LootDatabase {
+export default class Loot {
 
     #propertyTables;
     #commonItemTable;
