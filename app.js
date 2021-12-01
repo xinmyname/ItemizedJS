@@ -1,34 +1,16 @@
 import LootDatabase from "./Infrastructure/LootDatabase.js";
 import Inventory from "./Models/Inventory.js";
-import Item from "./Models/Item.js";
 
 if ("serviceWorker" in navigator) {
-
     const scope = (location.hostname == "localhost")
     ? "."
     : "/ItemizedJS"
 
-    navigator.serviceWorker.register(`${scope}/sw.js`)
-        .then((reg) => {
-            // registration worked
-            console.info('Registration succeeded. Scope is ' + reg.scope);
-        }).catch((error) => {
-            // registration failed
-            console.error('Registration failed with ' + error);
-        });
+    await navigator.serviceWorker.register(`${scope}/sw.js`, { type: 'module'})
 }
 
 const db = new LootDatabase(await fetch('data/loot.json').then(_ => _.json()));
 let inventory = new Inventory();
-
-inventory.add(new Item([1,1]));
-
-for (let i = 0; i < 10; i++)
-    inventory.add(db.makeItem());
-
-for (let [item,quantity] of inventory.slots()) {
-    console.debug(db.describe(item, quantity));
-}
 
 console.info("Initialization succeeded.");
 
@@ -40,8 +22,10 @@ runButton.addEventListener("click", () => {
     const itemsText = itemsField.value;
     let numItems = (itemsText.length) ? Number.parseInt(itemsText) : 10;
 
+    const counts = [1,1,1,1,1,1,1,2,2,3];
+
     for (; numItems > 0; numItems -= 1)
-        inventory.add(db.makeItem());
+        inventory.add(db.makeItem(), counts[Math.floor(Math.random() * counts.length)]);
 
     const main = document.querySelector("main");
 

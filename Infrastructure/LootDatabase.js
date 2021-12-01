@@ -69,7 +69,7 @@ export default class LootDatabase {
             }
         }
 
-        return `${quantityText} ${description} [${item}]`;
+        return `${quantityText} ${description}`;
     }
 
     #pluralize(text, quantity) {

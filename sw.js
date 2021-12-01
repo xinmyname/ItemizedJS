@@ -1,17 +1,34 @@
-const cacheName = 'Itemized';
+import IndexedStore from "./Infrastructure/IndexedStore.js";
+
+const cacheName = "Itemized";
+const version = 1;
 
 // Installing Service Worker
 self.addEventListener('install', (e) => {
+
     console.info('[Service Worker] Install');
+
     e.waitUntil((async () => {
+
+        let store = new IndexedStore("cache_version");
+        await store.open();
+
+        const cachedVersion = await store.get("version");
+
+        if (cachedVersion != version) {
+            console.info('[Service Worker] Version changed - clearing application cache');
+            caches.delete(cacheName);
+            await store.put("version", version);
+        }
+
         const cache = await caches.open(cacheName);
-        console.log('[Service Worker] Caching all: app shell and content');
+        console.info('[Service Worker] Caching all: app shell and content');
         // await cache.addAll(contentToCache);
     })());
 });
-  
-// Fetching content using Service Worker
+
 /*
+// Fetching content using Service Worker
 self.addEventListener('fetch', (e) => {
     e.respondWith((async () => {
         const r = await caches.match(e.request);
